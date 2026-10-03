@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments and local IDE files
+.venv/
+venv/
+.idea/
+.vscode/
+.DS_Store
+
+# Local pipeline state and generated scientific outputs
+active_run.txt
+runs/
+plots/
+graficos_vkr/
+*.log
+
+# Temporary OTSO worker files
+tmp/
+temp/
+

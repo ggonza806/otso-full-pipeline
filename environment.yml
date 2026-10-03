@@ -1,0 +1,13 @@
+name: otso_1219
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - numpy>=1.26
+  - pandas>=2.0
+  - scipy>=1.11
+  - matplotlib>=3.8
+  - pip:
+      - OTSO==1.2.19
+

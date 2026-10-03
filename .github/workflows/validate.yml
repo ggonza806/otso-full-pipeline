@@ -1,0 +1,38 @@
+name: Validate source and interpolation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install interpolation dependencies
+        run: python -m pip install numpy pandas scipy
+      - name: Check Python syntax
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          for path in Path('.').glob('*.py'):
+              ast.parse(path.read_text(encoding='utf-8'), filename=str(path))
+          PY
+      - name: Validate the MATLAB interpolation grid
+        run: |
+          python - <<'PY'
+          from rigidity_window_grid import clean_windows, densify_windows, load_boundary_file
+
+          raw = load_boundary_file()
+          r_low, r_high, valid, _ = clean_windows(raw['Rl'], raw['Ru'])
+          dense = densify_windows(raw, r_low, r_high, valid)
+          assert len(dense) == 24912
+          assert dense[['R_low', 'R_high']].notna().all().all()
+          assert (dense['R_low'] <= dense['R_high']).all()
+          PY
+
